@@ -9,13 +9,6 @@ class Author extends Model
     protected $fillable = ['name', 'age', 'city'];
 }
 
-// thanh nam
-
-
-
-
-
-
-
 
 // comment thu 3
+// tao comment thu 2
