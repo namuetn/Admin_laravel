@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UppercaseRule;
 
 class SongRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class SongRequest extends FormRequest
     {
         return [
             'name' => 'bail|required|min:3',
-            'detail' => 'bail|required|min:3',
+            'detail' => ['required','min:3', new UppercaseRule()],
             'author' => 'bail|required|min:3'
         ];
     }

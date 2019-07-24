@@ -17,11 +17,11 @@ Route::get('/t', 'PostController@index');
 Route::get('/', 'HomeController@index');
 Route::get('/search','PostController@search');
 
-Route::get('/song', 'CrudController@create')->name('song');
+Route::get('/song', 'SongController@create')->name('song');
 Route::get('/author', 'AuthorController@create')->name('author');
 
 Route::resource('posts','PostController');
-Route::resource('cruds','CrudController');
+Route::resource('cruds','SongController');
 Route::resource('authors','AuthorController');
 
 // Route::get('/login','CrudController@getLogin');

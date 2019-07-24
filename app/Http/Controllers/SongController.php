@@ -5,25 +5,26 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\SongRequest;
-use App\Post;
+use App\Song;
 
-class CrudController extends Controller
+class SongController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    protected $song;
+
+
     public function __construct(){
         $this->middleware('auth');
     }
 
     public function index()
     {
-
-        $posts = Post::all();   
-        return response()->json($posts);
-
+        $song = Song::all();   
+        return response()->json($song);
     }
 
     /**
@@ -33,7 +34,7 @@ class CrudController extends Controller
      */
     public function create()
     {
-        return view('ajax');
+        return view('song');
     }
 
     /**
@@ -46,8 +47,8 @@ class CrudController extends Controller
     {
 
         
-        $post = Post::create($request->all());
-        return response()-> json($post);
+        $song = Song::create($request->all());
+        return response()-> json($song);
     }
 
     /**
@@ -69,8 +70,8 @@ class CrudController extends Controller
      */
     public function edit(Request $request,$id)
     {
-        $post = Post::find($id);
-        return response()->json($post);
+        $song = Song::find($id);
+        return response()->json($song);
     }
 
     /**
@@ -82,8 +83,8 @@ class CrudController extends Controller
      */
     public function update(SongRequest $request, $id)
     {
-        $post = Post::find($id)->update($request->all());
-        return response()->json($post);
+        $song = Song::find($id)->update($request->all());
+        return response()->json($song);
     }
 
     /**
@@ -94,7 +95,7 @@ class CrudController extends Controller
      */
     public function destroy($id)
     {
-        Post::find($id)->delete();
+        Song::find($id)->delete();
         return response()->json(['status' => "OK"]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\NumberRule;
 
 class AuthorRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class AuthorRequest extends FormRequest
     {
         return [
             'name' => 'bail|required|min:3',
-            'age' => 'bail|required|min:3',
+            'age' => ['required', new NumberRule()],
             'city' => 'bail|required|min:3'
         ];
     }
