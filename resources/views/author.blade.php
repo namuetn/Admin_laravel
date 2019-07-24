@@ -37,6 +37,7 @@
 					<label>City</label>
 					<input type="text" id="city" class="form-control">
 				</div>
+				<div id="validate"></div>
 				<button type="button" id="save" onclick="saveData()" class="btn btn-primary">Submit</button>
 				<button type="button" id="update" onclick="updateData()" class="btn btn-warning">Update</button>
 			</form>
@@ -93,7 +94,12 @@
 					viewData();
 					clearData();
 					$('#save').show();
-
+				},
+				error: function(data){
+					$('#validate').html('');
+					$.each(data.responseJSON.errors, function(key, value){
+						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
+					});
 				} 
 			});
 		}
@@ -140,6 +146,12 @@
 					$('#save').show();
 					$('#update').hide();
 					$('.myid').hide(); 
+				},
+				error: function(data){
+					$('#validate').html('');
+					$.each(data.responseJSON.errors, function(key, value){
+						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
+					});
 				}
 			});
 		}
@@ -155,6 +167,7 @@
 				dataType: "json",
 				url: '/authors/'+id,
 				success: function(response){
+					$('#validate').html('');
 					viewData();
 				}
 			})

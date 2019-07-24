@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AuthorRequest;
 use App\Author;
 
 class AuthorController extends Controller
@@ -38,7 +40,7 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
         $author = Author::create($request->all());
         return response()-> json($author);
@@ -74,7 +76,7 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AuthorRequest $request, $id)
     {
         $author = Author::find($id)->update($request->all());
         return response()->json($author);

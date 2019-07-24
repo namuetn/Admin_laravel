@@ -20,8 +20,7 @@
 			</table>
 		</div>
 		<div class="col-md-4">
-
-			<form id="form_validate">
+			<form>
 				<div class="form-group myid">
 					<label>ID</label>
 					<input type="number" id="id" class="form-control" readonly="readonly" required>
@@ -40,8 +39,7 @@
 				</div>
 				<div id="validate"></div>
 				<button type="button" id="save" onclick="saveData()" class="btn btn-primary">Submit</button>
-				<button type="button" id="update" onclick="updateData()" class="btn btn-warning">Update</button>
-			
+				<button type="button" id="update" onclick="updateData()" class="btn btn-warning">Update</button>			
 			</form>
 		</div>
 	</div>
@@ -49,21 +47,10 @@
 
 <script type="text/javascript">
 		// $('#datatable').DataTable();
-		// $('#form_validate').validate({
-		// 	rules: {
-		// 		name :"required",
-		// 		detail:"required",
-		// 		author:"required"
-		// 	},
-		// 	messages: {
-		// 		name: "Plese fill out this field",
-		// 		detail: "Plese fill out this field",
-		// 		author: "Plese fill out this field"
-		// 	}
-		// });
 		$('#save').show();
 		$('#update').hide();
 		$('.myid').hide();
+
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -109,8 +96,6 @@
 					viewData();
 					clearData();
 					$('#save').show();
-				
-
 				},
 				error: function(data){
 					$('#validate').html('');
@@ -118,9 +103,6 @@
 						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
 					});
 				}
-
-				
-
 			});
 		}
 
@@ -185,18 +167,19 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
-			confirm('Are you sure ?');
-			$.ajax({
-				type: "DELETE",
-				dataType: "json",
+			if(confirm('Are you sure ?')){
+				$.ajax({
+					type: "DELETE",
+					dataType: "json",
 
-				url: '/cruds/'+id,
-				success: function(response){
-					$('#validate').html('');
-					viewData();
-					
-				}
-			});
+					url: '/cruds/'+id,
+					success: function(response){
+						$('#validate').html('');
+						viewData();
+						
+					}
+				});
+			}
 		}
 
 	</script>
