@@ -21,25 +21,27 @@
 		</div>
 		<div class="col-md-4">
 
-			<form>
+			<form id="form_validate">
 				<div class="form-group myid">
 					<label>ID</label>
-					<input type="number" id="id" class="form-control" readonly="readonly">
+					<input type="number" id="id" class="form-control" readonly="readonly" required>
 				</div>
 				<div class="form-group">
 					<label>Name</label>
-					<input type="text" id="name" class="form-control" name="name">
+					<input type="text" id="name" class="form-control" name="name" required>
 				</div>
 				<div class="form-group">
 					<label>Detail</label>
-					<textarea type="text" name="detail" id="detail" class="form-control"></textarea>
+					<textarea type="text" name="detail" id="detail" class="form-control" required></textarea>
 				</div>
 				<div class="form-group">
 					<label>Author</label>
 					<input type="text" id="author" class="form-control" name="author">
 				</div>
+				<div id="validate"></div>
 				<button type="button" id="save" onclick="saveData()" class="btn btn-primary">Submit</button>
 				<button type="button" id="update" onclick="updateData()" class="btn btn-warning">Update</button>
+			
 			</form>
 		</div>
 	</div>
@@ -47,10 +49,21 @@
 
 <script type="text/javascript">
 		// $('#datatable').DataTable();
+		// $('#form_validate').validate({
+		// 	rules: {
+		// 		name :"required",
+		// 		detail:"required",
+		// 		author:"required"
+		// 	},
+		// 	messages: {
+		// 		name: "Plese fill out this field",
+		// 		detail: "Plese fill out this field",
+		// 		author: "Plese fill out this field"
+		// 	}
+		// });
 		$('#save').show();
 		$('#update').hide();
 		$('.myid').hide();
-
 		$.ajaxSetup({
 			headers:{
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -96,8 +109,16 @@
 					viewData();
 					clearData();
 					$('#save').show();
+				
 
 				},
+				error: function(data){
+					$('#validate').html('');
+					$.each(data.responseJSON.errors, function(key, value){
+						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
+					});
+				}
+
 				
 
 			});
@@ -114,6 +135,7 @@
 			$('#save').hide();
 			$('#update').show();
 			$('.myid').show();
+			$('#validate').html('');
 
 			$.ajax({
 				type: "GET",
@@ -146,6 +168,13 @@
 					$('#save').show();
 					$('#update').hide();
 					$('.myid').hide(); 
+
+				},
+				error: function(data){
+					$('#validate').html('');
+					$.each(data.responseJSON.errors, function(key, value){
+						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
+					});
 				}
 			});
 		}
@@ -156,13 +185,14 @@
 					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 				}
 			});
-			
+			confirm('Are you sure ?');
 			$.ajax({
 				type: "DELETE",
 				dataType: "json",
 
 				url: '/cruds/'+id,
 				success: function(response){
+					$('#validate').html('');
 					viewData();
 					
 				}

@@ -93,6 +93,7 @@
 					viewData();
 					clearData();
 					$('#save').show();
+
 				} 
 			});
 		}

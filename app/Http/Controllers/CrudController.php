@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Requests\SongRequest;
+use App\Http\Requests\SongRequest;
 use App\Post;
 
 class CrudController extends Controller
@@ -42,28 +42,12 @@ class CrudController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SongRequest $request)
     {
 
-        // $validation = $request->validate([
-        //     'name' => 'required'
-        // ]);
-        // $request->validate([
-        //     'name'=>'required',
-        //     'author'=>'required',
-        //     'detail'=>'required'
-        // ]);
+        
         $post = Post::create($request->all());
         return response()-> json($post);
-
-        // if($post){
-        //     Session::flash('success','Add Successful');
-        // }
-        // else{
-        //     Session::flash('error','Add Failed');
-        // }
-        // return response()-> json($post);
-
     }
 
     /**
@@ -96,7 +80,7 @@ class CrudController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SongRequest $request, $id)
     {
         $post = Post::find($id)->update($request->all());
         return response()->json($post);

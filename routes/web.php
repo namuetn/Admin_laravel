@@ -12,6 +12,7 @@
 */
 
 
+Route::get('/t', 'PostController@index');
 
 Route::get('/', 'HomeController@index');
 Route::get('/search','PostController@search');
