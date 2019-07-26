@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\AuthorRequest;
+use App\Song;
 use App\Author;
 
 class AuthorController extends Controller
@@ -33,6 +34,7 @@ class AuthorController extends Controller
     {
         return view('author');
     }
+
 
     /**
      * Store a newly created resource in storage.
