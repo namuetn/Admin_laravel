@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\SongRequest;
 use App\Song;
+use App\Author;
 
 class SongController extends Controller
 {
@@ -23,8 +24,9 @@ class SongController extends Controller
 
     public function index()
     {
-        $song = Song::all();   
-        return response()->json($song);
+        $song = Song::all();
+        $author = Author::all();
+        return response()->json(['song'=>$song, 'author'=>$author]);
     }
 
     /**
@@ -34,7 +36,8 @@ class SongController extends Controller
      */
     public function create()
     {
-        return view('song');
+        $author = Author::all();        
+        return view('song',['author'=>$author]);
     }
 
     /**
@@ -45,8 +48,6 @@ class SongController extends Controller
      */
     public function store(SongRequest $request)
     {
-
-        
         $song = Song::create($request->all());
         return response()-> json($song);
     }

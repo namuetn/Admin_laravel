@@ -27,7 +27,7 @@ class SongRequest extends FormRequest
         return [
             'name' => 'bail|required|min:3',
             'detail' => ['required','min:3', new UppercaseRule()],
-            'author' => 'bail|required|min:3'
+            
         ];
     }
 }

@@ -33,10 +33,20 @@
 					<label>Detail</label>
 					<textarea type="text" name="detail" id="detail" class="form-control" required></textarea>
 				</div>
+
 				<div class="form-group">
 					<label>Author</label>
-					<input type="text" id="author" class="form-control" name="author">
+					<select class="form-control" name="author_id" id="author_id">
+						@foreach ($author as $a)
+						<option value="{{$a->id}}">{{$a->name}}</option>
+						@endforeach
+					</select>
 				</div>
+
+				<!-- <div class="form-group">
+					<label>Author</label>
+					<input type="text" id="author" class="form-control" name="author">
+				</div> -->
 				<div id="validate"></div>
 				<button type="button" id="save" onclick="saveData()" class="btn btn-primary">Submit</button>
 				<button type="button" id="update" onclick="updateData()" class="btn btn-warning">Update</button>			
@@ -63,13 +73,18 @@
 				dataType: "json",
 				url: "/cruds",
 				success: function(response){
+					
 					var rows = "";
-					$.each(response, function(key, value){
+					$.each(response.song, function(key, value){
+						var author = response.author.filter(function(check){
+							return check.id == value.author_id;
+						});
+						// console.log(song);
 						rows = rows + "<tr>";	
 						rows = rows + "<td>"+value.id+"</td>";
 						rows = rows + "<td>"+value.name+"</td>";
 						rows = rows + "<td>"+value.detail+"</td>";
-						rows = rows + "<td>"+value.author+"</td>";
+						rows = rows + "<td>"+author[0].name+"</td>";
 						rows = rows + "<td>";
 						rows = rows + "<button type='button' class='btn btn-warning' onclick='editData("+value.id+")'>Edit</button>";
 						rows = rows + "<button type='button' class='btn btn-danger' onclick='deleteData("+value.id+")'>Delete</button>";
@@ -85,21 +100,21 @@
 		function saveData(){
 			var name = $('#name').val();
 			var detail = $('#detail').val();
-			var author = $('#author').val();
+			var author_id = $('#author_id').val();
 			var token = $('meta[name="csrf-token"]').attr('content');
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
-				data: {name:name, detail:detail, author:author, _token:token},
+				data: {name:name, detail:detail,author_id:author_id ,_token:token},
 				url: '/cruds',
 				success: function(response){
 					viewData();
 					clearData();
 					$('#save').show();
 				},
-				error: function(data){
+				error: function(response){
 					$('#validate').html('');
-					$.each(data.responseJSON.errors, function(key, value){
+					$.each(response.responseJSON.errors, function(key, value){
 						$('#validate').append('<div class="alert alert-danger">'+value+'</div');
 					});
 				}
@@ -110,7 +125,7 @@
 			$('#id').val('');
 			$('#name').val('');
 			$('#detail').val('');
-			$('#author').val('');
+			$('#author_id').val('');
 		}
 
 		function editData(id){
@@ -127,7 +142,7 @@
 					$('#id').val(response.id);
 					$('#name').val(response.name);
 					$('#detail').val(response.detail);
-					$('#author').val(response.author);
+					$('#author_id').val(response.author);
 				}
 			});
 		}
@@ -136,13 +151,13 @@
 			var id = $('#id').val();
 			var name = $('#name').val();
 			var detail = $('#detail').val();
-			var author = $('#author').val();
+			var author_id = $('#author_id').val();
 			var token = $('meta[name="csrf-token"]').attr('content');
 
 			$.ajax({
 				type: "PUT",
 				dataType: "json",
-				data: {name:name, detail:detail, author:author, _token:token},
+				data: {name:name, detail:detail, author_id:author_id, _token:token},
 				url: '/cruds/'+id,
 				success: function(response){
 					viewData();
